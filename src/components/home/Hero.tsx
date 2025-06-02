@@ -16,7 +16,7 @@ export default function Hero() {
           Ceramics Studio
         </h1>
         <p className="text-lg md:text-xl text-neutral-700 italic">
-          Luxury handmade ceramics by an academic artist
+          Contemporary handmade ceramics by an academic artist
         </p>
       </div>
     </section>
