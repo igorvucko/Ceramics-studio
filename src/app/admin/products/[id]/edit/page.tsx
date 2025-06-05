@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { uploadImage } from '@/app/api/image/page';
 
 type Product = {
   id: number;
@@ -27,17 +28,19 @@ export default function EditProductPage() {
     details: '',
   });
 
+  const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (!id) return;
 
-fetch(`http://localhost:3000/products/id/${id}`)
+    fetch(`http://localhost:3000/products/id/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);
         setForm({
-name: data.name || '',
+          name: data.name || '',
           price: data.price || '',
           slug: data.slug || '',
           image: data.image || '',
@@ -51,24 +54,37 @@ name: data.name || '',
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-if (!form.name || !form.price || !form.slug || !form.image) {
+    if (!form.name || !form.price || !form.slug) {
       setError('Sva osnovna polja su obavezna.');
       return;
     }
 
     try {
-const res = await fetch(`http://localhost:3000/products/${id}`, {
+      setUploading(true);
+
+      let imageUrl = form.image;
+      if (file) {
+        imageUrl = await uploadImage(file);
+      }
+
+      const res = await fetch(`http://localhost:3000/products/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, image: imageUrl }),
       });
 
       if (!res.ok) {
@@ -79,6 +95,8 @@ const res = await fetch(`http://localhost:3000/products/${id}`, {
       router.push('/admin/products');
     } catch (err) {
       setError((err as Error).message);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -87,58 +105,18 @@ const res = await fetch(`http://localhost:3000/products/${id}`, {
   return (
     <div className="max-w-2xl mx-auto mt-10">
       <h1 className="text-2xl font-bold mb-4">Uredi proizvod</h1>
-
       {error && <p className="text-red-600 mb-4">{error}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          name="name"
-          placeholder="Naziv"
-          className="w-full border p-2"
-value={form.name}
-          onChange={handleChange}
-        />
-        <input
-          name="price"
-          placeholder="Cijena"
-          className="w-full border p-2"
-          value={form.price}
-          onChange={handleChange}
-        />
-        <input
-          name="slug"
-          placeholder="Slug"
-          className="w-full border p-2"
-          value={form.slug}
-          onChange={handleChange}
-        />
-        <input
-          name="image"
-          placeholder="Ime slike (npr. salica.jpg)"
-          className="w-full border p-2"
-          value={form.image}
-          onChange={handleChange}
-        />
-        <input
-          name="description"
-          placeholder="Kratki opis proizvoda"
-          className="w-full border p-2"
-          value={form.description}
-          onChange={handleChange}
-        />
-        <textarea
-          name="details"
-          placeholder="Detalji o proizvodu (materijal, porijeklo...)"
-          className="w-full border p-2"
-          value={form.details}
-          onChange={handleChange}
-        />
-
-        <button type="submit" className="bg-black text-white px-4 py-2 rounded">
-          Spremi
-        </button>
+        <input name="name" placeholder="Naziv" className="w-full border p-2" value={form.name} onChange={handleChange} />
+        <input name="price" placeholder="Cijena" className="w-full border p-2" value={form.price} onChange={handleChange} />
+        <input name="slug" placeholder="Slug" className="w-full border p-2" value={form.slug} onChange={handleChange} />
+        <input name="image" placeholder="Trenutni URL slike" className="w-full border p-2" value={form.image} onChange={handleChange} />
+        <input type="file" onChange={handleImageChange} className="w-full border p-2" />
+        <input name="description" placeholder="Opis" className="w-full border p-2" value={form.description} onChange={handleChange} />
+        <textarea name="details" placeholder="Detalji" className="w-full border p-2" value={form.details} onChange={handleChange} />
+        <button type="submit" className="bg-black text-white px-4 py-2 rounded">Spremi</button>
       </form>
     </div>
   );
 }
-
