@@ -1,4 +1,4 @@
-export const dynamic= 'force-dynamic';
+export const dynamic = 'force-dynamic';
 
 interface Product {
   id: number;
@@ -6,6 +6,8 @@ interface Product {
   price: string;
   image: string;
   slug: string;
+  description: string;
+  details: string;
 }
 
 async function getProduct(slug: string): Promise<Product> {
@@ -20,7 +22,11 @@ const res = await fetch(`http://localhost:3000/products/${slug}`, {
   return res.json();
 }
 
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+export default async function ProductPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const product = await getProduct(params.slug);
 
   return (
@@ -31,15 +37,24 @@ export default async function ProductPage({ params }: { params: { slug: string }
 alt={product.name}
           className="w-full h-[500px] object-cover rounded-xl shadow-md"
         />
-        <div><h1 className="text-3xl font-serif font-semibold mb-4">
-{product.name}</h1>
-          <p className="text-xl text-neutral-700 mb-4">{product.price}</p>
-          <p className="text-neutral-600 italic mb-6">
-            Ovo je luksuzan, ručno rađen keramički komad iz limitirane kolekcije.
-          </p>
+        <div>
+          <h1 className="text-3xl font-serif font-semibold mb-4">
+{product.name}
+          </h1>
+          <p className="text-xl text-neutral-700 mb-4">{product.price} €</p>
 
-          <form action="/api/checkout" method="POST">
-          <input type="hidden" name="name" value={product.name} />
+          {product.description && (
+            <p className="text-lg mt-4 text-gray-800">{product.description}</p>
+          )}
+
+          {product.details && (
+            <div className="mt-6 text-gray-600 whitespace-pre-line">
+              {product.details}
+            </div>
+          )}
+
+          <form action="/api/checkout" method="POST" className="mt-6">
+
             <input type="hidden" name="price" value={parseFloat(product.price)} />
             <input type="hidden" name="slug" value={product.slug} />
             <button
