@@ -33,13 +33,13 @@ export default async function ProductPage({
     <section className="py-16 px-6 bg-white min-h-screen">
       <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <img
-          src={`/${product.image}`}
-alt={product.name}
+          src={product.image}
+          alt={product.name}
           className="w-full h-[500px] object-cover rounded-xl shadow-md"
         />
         <div>
           <h1 className="text-3xl font-serif font-semibold mb-4">
-{product.name}
+            {product.name}
           </h1>
           <p className="text-xl text-neutral-700 mb-4">{product.price} €</p>
 
