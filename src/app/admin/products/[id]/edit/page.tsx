@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { uploadImage } from '@/app/api/image/page';
+import { uploadImage } from '@/app/api/image/uploadImage';
 
 type Product = {
   id: number;

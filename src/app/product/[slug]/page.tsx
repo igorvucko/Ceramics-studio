@@ -22,12 +22,11 @@ const res = await fetch(`http://localhost:3000/products/${slug}`, {
   return res.json();
 }
 
-export default async function ProductPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const product = await getProduct(params.slug);
+export default async function ProductPage({params}:{params: {slug:string}}){
+
+  const product =await getProduct(params.slug);
+
+
 
   return (
     <section className="py-16 px-6 bg-white min-h-screen">
