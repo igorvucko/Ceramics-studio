@@ -1,28 +1,53 @@
-const mockProducts = [
-  { id: 1, name: "Porculanska zdjela", image: "/product-1.jpg" },
-  { id: 2, name: "Skulpturalna vaza", image: "/product-2.jpg" },
-  { id: 3, name: "Unikatna šalica", image: "/product-3.jpg" },
+'use client';
+import Image from 'next/image';
+
+const features = [
+  {
+    src: '/hero3.jpg',
+    alt: 'Ručno izrađena šalica',
+    label: 'Ručna izrada',
+    description: 'Svaki komad izrađen s pažnjom i stručnošću.'
+  },
+  {
+    src: '/hero1.jpg',
+    alt: 'Inspirirana prirodom zdjela',
+    label: 'Inspirirano prirodom',
+    description: 'Oblici i teksture nadahnuti zemljom.'
+  },
+  {
+    src: '/hero2.jpg',
+    alt: 'Limitirana kolekcija',
+    label: 'Limitirane kolekcije',
+    description: 'Unikatni radovi dostupni u malim serijama.'
+  },
 ];
 
 export default function FeaturedProducts() {
   return (
-    <section className="py-16 bg-neutral-50 px-6">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-3xl font-serif text-center mb-10">
-          Izdvojeni radovi
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {mockProducts.map((product) => (
-            <div key={product.id} className="text-center">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-80 object-cover rounded-2xl shadow-md"
+    <section className="bg-[#fdf6ec] py-20 px-4 text-center">
+      <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6">
+        Unique Handmade Pottery
+      </h2>
+      <p className="text-md md:text-lg text-gray-700 mb-12">
+        Learn about sare codiacay–craftcrafted ceramics.
+      </p>
+
+      <div className="container mx-auto grid md:grid-cols-3 gap-12">
+        {features.map((feature, index) => (
+          <div key={index} className="flex flex-col items-center">
+            <div className="w-[240px] h-[240px] overflow-hidden rounded shadow-sm">
+              <Image
+                src={feature.src}
+                alt={feature.alt}
+                width={240}
+                height={240}
+                className="object-cover w-full h-full"
               />
-              <p className="mt-4 text-lg font-medium">{product.name}</p>
             </div>
-          ))}
-        </div>
+            <h3 className="text-lg font-semibold mt-4">{feature.label}</h3>
+            <p className="text-sm mt-1 text-gray-700">{feature.description}</p>
+          </div>
+        ))}
       </div>
     </section>
   );
