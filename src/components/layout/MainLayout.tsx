@@ -1,5 +1,5 @@
 'use client';
-
+import AdminLink from '../navigation/AdminLink';
 import { useEffect, useState } from 'react';
 import Header from '../navigation/Header';
 import Footer from '../navigation/Footer';
@@ -33,6 +33,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <NavigationLoader/>
       <main className="flex-1 container mx-auto px-4 py-8">{children}</main>
       <Footer />
+      <AdminLink />
     </div>
   );
 }
