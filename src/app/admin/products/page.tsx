@@ -19,7 +19,7 @@ export default function AdminProductsPage() {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    fetch('http://localhost:3000/products')
+    fetch('http://localhost:3001/products')
       .then(res => res.json())
       .then(data => setProducts(data));
   }, []);
@@ -27,7 +27,7 @@ export default function AdminProductsPage() {
   const handleDelete = async (id: number) => {
     const confirmed = confirm('Jeste li sigurni da želite obrisati proizvod?');
     if (!confirmed) return;
-    await fetch(`http://localhost:3000/products/${id}`, {
+    await fetch(`http://localhost:3001/products/${id}`, {
       method: 'DELETE',
     });
     setProducts(prev => prev.filter(p => p.id !== id));

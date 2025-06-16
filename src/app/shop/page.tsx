@@ -7,7 +7,7 @@ interface Product {
 }
 
 async function getProducts(): Promise<Product[]> {
-  const res = await fetch('http://localhost:3000/products', {
+  const res = await fetch('http://localhost:3001/products', {
     cache: 'no-store',
   });
 

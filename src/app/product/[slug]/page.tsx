@@ -11,7 +11,7 @@ interface Product {
 }
 
 async function getProduct(slug: string): Promise<Product> {
-const res = await fetch(`http://localhost:3000/products/${slug}`, {
+const res = await fetch(`http://localhost:3001/products/${slug}`, {
     cache: 'no-store',
   });
 

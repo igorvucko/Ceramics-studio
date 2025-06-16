@@ -18,7 +18,7 @@ export default function AdminOrdersPage() {
   const itemsPerPage = 5;
 
   useEffect(() => {
-    fetch('http://localhost:3000/orders')
+    fetch('http://localhost:3001/orders')
       .then(res => res.json())
       .then(data => setOrders(data));
   }, []);
