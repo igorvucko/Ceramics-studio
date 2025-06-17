@@ -15,14 +15,19 @@ export default function LoginPage() {
 
 const res = await fetch('http://localhost:3001/auth/login', {
       method: 'POST',
-      credentials: 'include', // ⚠️ važno – omogućuje slanje/primanje cookieja
-      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ username, password }),
     });
 
-    if (res.ok) {
-      router.push('/admin');
-    } else {
+
+if (res.ok) {
+  window.dispatchEvent(new Event('auth-changed'));
+  router.refresh();
+  router.push('/admin');
+} else {
       const data = await res.json();
       setError(data.message || 'Greška pri prijavi');
     }

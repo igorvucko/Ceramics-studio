@@ -1,4 +1,5 @@
 'use client';
+
 import AdminLink from '../navigation/AdminLink';
 import { useEffect, useState } from 'react';
 import Header from '../navigation/Header';
@@ -10,7 +11,6 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     const handleLoad = () => {
-
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
@@ -30,7 +30,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   return (
     <div className="flex min-h-screen flex-col bg-white text-neutral-900">
       <Header />
-      <NavigationLoader/>
+      <NavigationLoader />
       <main className="flex-1 container mx-auto px-4 py-8">{children}</main>
       <Footer />
       <AdminLink />
