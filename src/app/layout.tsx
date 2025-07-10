@@ -4,7 +4,6 @@ import { Inter } from "next/font/google";
 import MainLayout from "@/components/layout/MainLayout";
 import { DefaultSeo } from 'next-seo';
 import SEO from '@/seo.config';
-import { AuthProvider } from '@/context/AuthContext';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +18,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
        <head />
       <body className={inter.className}>
         <DefaultSeo {...SEO}/>
-        {children}
-        <AuthProvider>
         <MainLayout>{children}</MainLayout>
-        </AuthProvider>
+
       </body>
     </html>
   );
